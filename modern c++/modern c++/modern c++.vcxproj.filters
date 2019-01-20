@@ -23,7 +23,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="container.cpp">
+    <ClCompile Include="lambda.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
