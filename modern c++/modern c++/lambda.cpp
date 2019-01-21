@@ -43,6 +43,7 @@ auto main()->int
 	cout << endl;
 	cout << endl;
 
+
 	cout << "ex3 ) 람다 표현식에서 값 변환" << endl;
 	vector<int> myvec2;
 	myvec2.resize(myvec.size());
@@ -58,9 +59,9 @@ auto main()->int
 	cout << endl;
 	cout << endl;
 
+
 	cout << "ex4 ) 람다 표현식에서 값 캡쳐하기" << endl;	
-	int a = 2; 
-	int b = 7; 
+	int a = 2, b = 7; 
 
 	cout << "명시적으로 두 변수 캡쳐, a: " << a << ", b: " << b << endl;
 
@@ -81,9 +82,7 @@ auto main()->int
 		cout << endl; 
 	});
 
-	a = 3; 
-	b = 5; 
-
+	a = 3, 	b = 5; 
 	cout << "암시적으로 두 변수 캡쳐, a: " << a << ", b: " << b << endl;
 	cout << "bewteen " << a << " and " << b << " : ";
 	for_each(begin(myvec), end(myvec), [=](int i) 
@@ -95,15 +94,13 @@ auto main()->int
 	});
 
 	cout << "mutable 사용" << endl; 
-	a = 1; 
-	b = 1;
-
+	a = 1, 	b = 1;
 	for_each(begin(myvec), end(myvec), [=](int& x) 
 	mutable{
 		const int old = x; 
 		x *= 2; 
-		a = b; 
-		b = old; 	
+		a = 100;	// mutable없으면, a 와 b 직접 참조를 못함
+		b = 200;	// 여기서 수정한다고 바뀌지 않음 	
 	});
 
 	for_each(begin(myvec), end(myvec), [](int i) 
@@ -111,8 +108,29 @@ auto main()->int
 		cout << i << " ";	
 	});
 	cout << endl; 
-
 	cout << "a : " << a << ", b : " << b << endl; 
 
+
+	cout << "ex5 ) lambda captureing by reference" << endl; 
+	for_each(begin(myvec), end(myvec), [&a, &b](int x) 
+	{
+		a = a + x; 
+		b = a / 2;	
+	});
+	cout << "a : " << a << ", b : " << b << endl;
+
+
+	cout << "ex6 ) initialization capture" << endl;
+	a = 100, b = 200;
+	auto mylambda = [&x = a]() {x = x * 3; };	// x, 변수 타입 설정이 없는게 어색함
+	mylambda();
+	cout << "a : " << a << ", b : " << b << endl;
+
+
+	cout << "ex7 ) lambda express generic" << endl;
+	auto getMax = [](auto x, auto y) {return x > y ? x : y; };	// 책에선 &x를 사용했는데, 왜 그랬는지...?
+	cout << "3, 5 중에 큰 수는 " << getMax(3, 5) << "이고, ";
+	cout << "1.5, 5.97 중에 큰 수는 " << getMax(5.97, 1.5) << "이다. " << endl;
+	   
 	return 0; 
 }
